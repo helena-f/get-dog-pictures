@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dog Pictures</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f8ff; }
+    h1 { color: #ff69b4; }
+    button { background-color: #ff69b4; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 50px; }
+    button:hover { background-color: #ff1493; }
+    select { padding: 5px; 
+    img { max-width: 400px; margin-top: 20px; }
+    #dogImageContainer { margin-top: 20px; }
+    section { margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <h1>🐶 Random Dog Image 🐶</h1>
+  <label for="breedSelector">Choose a breed: </label>
+  <select id="breedSelector">
+    <option value="husky">Husky</option>
+    <option value="hound">Hound</option>
+    <option value="dalmatian">Dalmatian</option>
+  </select>
+  <button id="getDogBtn">Get Image</button>
+  <div id="dogImageContainer"></div>
+  <section>
+    <h2>About This API</h2>
+    <p>The <strong>Dog CEO's Dog API</strong> provides random dog images. Learn more at 
+      <a href="https://dog.ceo/dog-api/" target="_blank">dog.ceo</a>.
+    </p>
+  </section>
+  <script>
+    const getDogBtn = document.getElementById('getDogBtn');
+    const dogImageContainer = document.getElementById('dogImageContainer');
+    const breedSelector = document.getElementById('breedSelector');
+
+    getDogBtn.addEventListener('click', () => {
+      const selectedBreed = breedSelector.value;
+      const apiUrl = `https://dog.ceo/api/breed/${selectedBreed}/images/random`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          dogImageContainer.innerHTML = '';
+          const dogImg = document.createElement('img');
+          dogImg.src = data.message;
+          dogImg.alt = `${selectedBreed} image`;
+          dogImageContainer.appendChild(dogImg);
+        })
+        .catch(error => {
+          console.error('Error fetching dog image:', error);
+          dogImageContainer.innerHTML = '<p style="color:red;">Failed to load image.</p>';
+        });
+    });
+  </script>
+</body>
+</html>
